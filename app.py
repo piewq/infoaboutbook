@@ -36,7 +36,7 @@ with st.form("book_form"):
 
     submit = st.form_submit_button("Добавить")
 
-#Obrabotka dannih from form 
+#Обрабатываем данные из формы
 if submit:
     new_data = pd.DataFrame({
         "Название": [title],
@@ -47,8 +47,6 @@ if submit:
         "Дата конца": [end_date],
         "Моя оценка": [rating]
     })
-    st.session_state.data = pd.concat([st.session_state.data, new_data], ignore_index=True)
-    st.success(f"Книга '{title}' добавлена!")
 
 #Добавляем новые данные в таблицу
     data = pd.concat([data, new_data], ignore_index=True)
@@ -58,21 +56,38 @@ if submit:
 
     st.success(f"Книга '{title}' добавлена!")
 
-#If we have data, we show grafick
+#Если есть данные, показываем график
 if not data.empty:
     st.subheader("Ваши данные:")
     st.dataframe(data)
-    
-#Create interactive graphic 
-   fig = px.timeline(
-        st.session_state.data,
-        x_start="Дата начала",
-        x_end="Дата конца",
-        y="Тип",
-        color="Жанр",
-        hover_data=["Название", "Автор", "Моя оценка"]
-    )
-    fig.update_layout(title="Темп чтения", xaxis_title="Время", yaxis_title="Тип книги")
-    st.plotly_chart(fig)
+
+    # Преобразуем колонки с датами в тип datetime
+    try:
+        data["Дата начала"] = pd.to_datetime(data["Дата начала"])
+        data["Дата конца"] = pd.to_datetime(data["Дата конца"])
+        st.success("Даты преобразованы успешно.")
+    except Exception as e:
+        st.error(f"Ошибка преобразования дат: {e}")
+        data["Дата начала"] = pd.to_datetime(data["Дата начала"], errors='coerce')
+        data["Дата конца"] = pd.to_datetime(data["Дата конца"], errors='coerce')
+
+    # Проверяем структуру данных перед созданием графика
+    st.write("Проверка данных перед созданием графика:")
+    st.write(data)
+
+    # Создаем интерактивный график
+    try:
+        fig = px.timeline(
+            data,
+            x_start="Дата начала",
+            x_end="Дата конца",
+            y="Тип",
+            color="Жанр",
+            hover_data=["Название", "Автор", "Моя оценка"]
+        )
+        fig.update_layout(title="Темп чтения", xaxis_title="Время", yaxis_title="Тип книги")
+        st.plotly_chart(fig)
+    except Exception as e:
+        st.error(f"Ошибка при создании графика: {e}")
 else:
     st.info("Добавьте хотя бы одну книгу, чтобы увидеть график.")
