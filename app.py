@@ -24,10 +24,10 @@ if query:
     books = get_books(query)
     if books:
         for book in books:
-        author_list = book['volumeInfo'].get('authors', [])
-        genre_list = book['volumeInfo'].get('categories', [])
-        authors.update(author_list)
-        genres.update(genre_list)
+            author_list = book['volumeInfo'].get('authors', [])
+            genre_list = book['volumeInfo'].get('categories', [])
+            authors.update(author_list)
+            genres.update(genre_list)
 
 #Выводим авторов и жанры в виде выпадающего списка
 selected_author = st.selectbox("Выберите автора", list(authors))
