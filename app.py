@@ -30,18 +30,18 @@ if query:
             genres.update(genre_list)
 
 #Выводим авторов и жанры в виде выпадающего списка
-selected_author = st.selectbox("Выберите автора", list(authors))
-selected_genre = st.selectbox("Выберите жанр", list(genres))
+        selected_author = st.selectbox("Выберите автора", list(authors))
+        selected_genre = st.selectbox("Выберите жанр", list(genres))
 
 #Показать информацию о книгах
-for book in books:
-    title = book['volumeInfo'].get('title', 'Неизвестно')
-    authors = ', '.join(book['volumeInfo'].get('authors', ['Неизвестно']))
-    description = book['volumeInfo'].get('description', 'Нет описания')
-    st.write(f"Название: {title}")
-    st.write(f"Авторы: {authors}")
-    st.write(f"Описание: {description}")
-    st.write("---")
+    for book in books:
+        title = book['volumeInfo'].get('title', 'Неизвестно')
+        authors = ', '.join(book['volumeInfo'].get('authors', ['Неизвестно']))
+        description = book['volumeInfo'].get('description', 'Нет описания')
+        st.write(f"Название: {title}")
+        st.write(f"Авторы: {authors}")
+        st.write(f"Описание: {description}")
+        st.write("---")
     else:
         st.write("Книги не найдены.")
 
