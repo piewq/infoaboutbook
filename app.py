@@ -23,7 +23,7 @@ genres = set()
 if query:
     books = get_books(query)
     if books:
-        fir book in books:
+        for book in books:
         author_list = book['volumeInfo'].get('authors', [])
         genre_list = book['volumeInfo'].get('categories', [])
         authors.update(author_list)
