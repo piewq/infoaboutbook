@@ -9,7 +9,7 @@ data_file = "books_data.csv"
 
 #If we have file, upload data
 if os.path.exists(data_file):
-    data = pd.read_csv(data_file)
+    data = pd.read.csv(data_file)
 else:
     data = pd.DataFrame(columns=["Название", "Автор", "Тип", "Жанр", "Дата начала", "Дата конца", "Моя оценка"])
 
